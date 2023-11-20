@@ -7,16 +7,28 @@ const customInputVariants = cva(
 );
 
 interface ICustomInputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+  extends React.InputHTMLAttributes<HTMLInputElement> {
+  labelVisible: boolean;
+  label: string;
+}
 
 export default function CustomInput({
   className,
+  id,
+  labelVisible,
+  label,
   ...props
 }: ICustomInputProps) {
   return (
-    <input
-      className={twMerge(clsx(customInputVariants({ className })))}
-      {...props}
-    />
+    <div className="mt-2 flex flex-col text-lg font-semibold">
+      <label className={labelVisible ? "block" : "hidden"} htmlFor={id}>
+        {label}
+      </label>
+      <input
+        className={twMerge(clsx(customInputVariants({ className })))}
+        id={id}
+        {...props}
+      />
+    </div>
   );
 }

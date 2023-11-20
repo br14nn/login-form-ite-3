@@ -9,22 +9,21 @@ const customButtonVariants = cva(
 interface ICustomButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof customButtonVariants> {
+  disabled?: boolean;
   children?: React.ReactNode;
 }
 
 export default function CustomButton({
   children,
+  disabled,
   className,
   ...props
 }: ICustomButtonProps) {
   return (
     <button
       className={twMerge(clsx(customButtonVariants({ className })))}
-      {
-        ...props
-        // data-testid="submitButton"
-        // role="button"
-      }
+      disabled={disabled}
+      {...props}
     >
       {children}
     </button>

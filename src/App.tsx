@@ -13,7 +13,7 @@ interface ILoginDetails {
 
 interface IAlertBox {
   variant: "error" | "success";
-  visibility: "hidden" | "show";
+  visible: boolean;
   content: string;
 }
 
@@ -24,7 +24,7 @@ export default function () {
   });
   const [alertBox, setAlertBox] = useState<IAlertBox>({
     variant: "error",
-    visibility: "hidden",
+    visible: false,
     content: "",
   });
   const [buttonDisabled, setButtonDisabled] = useState<boolean>(true);
@@ -51,7 +51,7 @@ export default function () {
       setAlertBox({
         variant: "success",
         content: "Login Success",
-        visibility: "show",
+        visible: true,
       });
     } else if (
       usernameInput !== defaultUsername ||
@@ -60,7 +60,7 @@ export default function () {
       setAlertBox({
         variant: "error",
         content: "Incorrect username or password",
-        visibility: "show",
+        visible: true,
       });
     }
   };
@@ -75,44 +75,48 @@ export default function () {
   };
 
   return (
-    <main className="min-h-screen w-full min-w-[300px] bg-gray-800 pt-32">
+    <main
+      className="min-h-screen w-full min-w-[300px] bg-gray-800 pt-32"
+      data-testid="main"
+    >
       <form
         className="mx-auto flex w-full min-w-[300px] max-w-[450px] flex-col rounded-md bg-white p-6"
         onSubmit={handleSubmit}
       >
-        <CustomAlertBox
-          className="mb-4 border-2 border-yellow-500"
-          variant={alertBox.variant}
-          visibility={alertBox.visibility}
-        >
-          {alertBox.content}
-        </CustomAlertBox>
+        {alertBox.visible && (
+          <CustomAlertBox
+            data-testid="customAlertBox"
+            className="mb-4 border-2 border-yellow-500"
+            variant={alertBox.variant}
+          >
+            {alertBox.content}
+          </CustomAlertBox>
+        )}
 
-        <div className="flex flex-col text-lg font-semibold">
-          <label htmlFor="username ">Username</label>
-          <CustomInput
-            id="username"
-            data-testid="usernameInput"
-            type="text"
-            autoComplete="off"
-            onChange={handleChange}
-            value={loginDetails.username}
-          />
-        </div>
+        <CustomInput
+          id="username"
+          label="Username"
+          data-testid="usernameInput"
+          type="text"
+          autoComplete="off"
+          onChange={handleChange}
+          value={loginDetails.username}
+          labelVisible={true}
+        />
 
-        <div className="mt-2 flex flex-col text-lg font-semibold">
-          <label htmlFor="password">Password</label>
-          <CustomInput
-            id="password"
-            data-testid="passwordInput"
-            type="password"
-            onChange={handleChange}
-            value={loginDetails.password}
-          />
-        </div>
+        <CustomInput
+          id="password"
+          data-testid="passwordInput"
+          type="password"
+          label="Password"
+          onChange={handleChange}
+          value={loginDetails.password}
+          labelVisible={true}
+        />
 
         <CustomButton
           className="mt-5 disabled:cursor-not-allowed disabled:bg-black/60"
+          data-testid="loginButton"
           disabled={buttonDisabled}
         >
           Login

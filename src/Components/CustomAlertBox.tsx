@@ -10,14 +10,9 @@ const customAlertBoxVariants = cva(
         error: "bg-red-500",
         success: "bg-green-500",
       },
-      visibility: {
-        hidden: "hidden",
-        show: "flex",
-      },
     },
     defaultVariants: {
       variant: "error",
-      visibility: "hidden",
     },
   },
 );
@@ -31,15 +26,12 @@ interface ICustomAlertBox
 export default function CustomAlertBox({
   className,
   variant,
-  visibility,
   children,
   ...props
 }: ICustomAlertBox) {
   return (
     <div
-      className={twMerge(
-        clsx(customAlertBoxVariants({ variant, visibility, className })),
-      )}
+      className={twMerge(clsx(customAlertBoxVariants({ variant, className })))}
       {...props}
     >
       {children}
