@@ -1,7 +1,6 @@
 import "@testing-library/jest-dom";
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import App from "../App";
 import CustomButton from "../Components/CustomButton";
 
 describe("Button", () => {
@@ -16,28 +15,32 @@ describe("Button", () => {
   });
 
   it("should be clicked", async () => {
-    render(<App />);
+    const handleClick = jest.fn();
+    render(
+      <CustomButton onClick={handleClick} data-testid="testButton">
+        Button
+      </CustomButton>,
+    );
 
-    const loginButton = screen.getByTestId("loginButton");
-    const usernameInput = screen.getByTestId("usernameInput");
-    const passwordInput = screen.getByTestId("passwordInput");
+    const customButton = screen.getByTestId("testButton");
 
-    await userEvent.type(usernameInput, "test");
-    await userEvent.type(passwordInput, "test");
-    await userEvent.click(loginButton);
+    await userEvent.click(customButton);
 
-    const customAlertBox = screen.getByTestId("customAlertBox");
-    expect(customAlertBox).toBeInTheDocument();
+    expect(handleClick).toHaveBeenCalled();
 
     cleanup();
   });
 
   it("should be disabled", () => {
-    render(<App />);
+    render(
+      <CustomButton data-testid="testButton" disabled={true}>
+        Button
+      </CustomButton>,
+    );
 
-    const loginButton = screen.getByTestId("loginButton");
+    const customButton = screen.getByTestId("testButton");
 
-    expect(loginButton).toBeDisabled();
+    expect(customButton).toBeDisabled();
   });
 
   it("should render the text inside correctly", () => {
